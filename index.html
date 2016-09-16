@@ -31,37 +31,38 @@ jsTuner v1.0
 	<div id="tuner-panel">
 		# Frets:<select id="frets-select"></select>
 		Tuning:<select id="tuning-select"></select>
-		Highlight Mode:
-		<select id="highlight-select">
-			<option value="all">All Notes</option>
-			<option value="root">Roots Only</option>
-			<option value="scale">Scale Notes Only</option>
-		</select>
-		Display:
-		<select id="display-select">
-			<option value="notes">Notes</option>
-			<option value="intervals">Intervals</option>
-		</select>
 		<div style="float:right;">
+			Highlight Mode:
+			<select id="highlight-select">
+				<option value="all">All Notes</option>
+				<option value="root">Roots Only</option>
+				<option value="scale">Scale Notes Only</option>
+			</select>
+			Display:
+			<select id="display-select">
+				<option value="notes">Notes</option>
+				<option value="intervals">Intervals</option>
+			</select>
 			Key:<select id="key-select"></select>
 			Scale:<select id="scale-select"></select>
 		</div>
 		<table id="button-table"></table>
-		<br/><br/>
+		<br/>
 		<hr/>
-		<textarea id="tab-text" style="width: 100%; height: 300px;resize: none;"></textarea>
-		<div style="float:right;">
+		<div id="tab-holder" style="width: 100%; height: 300px;">
+			<textarea id="tab-text" style="width: 100%; height: 100%;resize:none;"></textarea>
+			<pre id="tab-show" style="margin: 0px;width:100%;height:100%;font-family:monospace;display:none;overflow:auto;border:2px solid #CCCCCC;background-color:#000000;padding:5px;"></pre>
+		</div>
+		
+		<div style="float:right;margin-top:10px;">
 			Speed:<select id="speed-select"></select>
 			<button id="go">Play</button>
 		</div>
 	</div>
 	
 	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="underscore.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-    <script type="text/javascript">
-	
-
-    </script>
 	<script>
 	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

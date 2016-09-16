@@ -2,6 +2,12 @@ Number.prototype.mod = function(n) {
 	return ((this % n) + n) % n;
 }
 
+/* TODO
+
+	fix tunings (all notes are for standard, the string/fret combo doesn't work
+
+*/
+
 var data = {
 	"tunings": {
 		"standard": {
@@ -45,12 +51,13 @@ var data = {
 };
 
 window.jsTuner = {
+	resourceURL: 'http://obsius.github.io/jsTuner/resources/',
 	fullScale: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'],
 	intervals: ['R', 'm2', 'M2', 'm3', 'M3', 'P4', 'A4', 'P5', 'm6', 'M6', 'm7', 'M7'],
 	colors: ['00bce6', 'ff842c', '00d24a', 'efff00', 'ae55ff', 'ff3f3f', '2961ff', '52fff7', 'ff5ac5', 'a6dd99', '1bff00', '7a15ff'],
 	freqC0: 16.352,
 	
-	numFrets: 12,
+	numFrets: 21,
 	tuning: 'standard',
 	key: 'E',
 	scale: 'minorBlues',
@@ -59,6 +66,7 @@ window.jsTuner = {
 	
 	timer: null,
 	playing: false,
+	notes: {},
 	
 	frets: [],
 	intervalMap: {},
@@ -105,6 +113,9 @@ window.jsTuner = {
 	
 	renderNeck: function() {
 		var self = this;
+		
+		// load audio
+		this.preLoadNotes();
 		
 		$('#button-table').empty();
 		
@@ -191,6 +202,17 @@ window.jsTuner = {
 		}
 	},
 	
+	preLoadNotes: function() {
+		for (var string = 0; string < 6; ++string) {
+			for (var fret = 0; fret <= this.numFrets; ++fret) {
+				var audio = new Audio(this.resourceURL + string + fret + '.mp3');
+				audio.preload = 'auto';
+				if (!this.notes[string]) { this.notes[string] = {}; }
+				this.notes[string][fret] = audio;
+			}
+		}
+	},
+	
 	go: function() {
 	
 		var self = this;
@@ -217,10 +239,8 @@ window.jsTuner = {
 		
 		$('#go').on('click', function(e) {
 			if (!self.playing) {
-				$(this).html('Stop');
 				self.playTab();
 			} else {
-				$(this).html('Play');
 				self.stopTab();
 			}
 		});
@@ -279,59 +299,63 @@ window.jsTuner = {
 			}
 		}
 
-		var audio = new Audio('./resources/' + string + fret + '.mp3');
-		audio.play().then(function() {
+		var audio = this.notes[string][fret];
 		
-			$button.addClass('active');
+		try {
+			audio.play();
+			audio.onplay = function() {
 			
-			self.running[string] = {
-				$button: $button,
-				audio: audio
-			}
-			
-			audio.onended = function() {
-				$button.removeClass('active');
+				$button.addClass('active');
+				
+				self.running[string] = {
+					$button: $button,
+					audio: audio
+				}
+				
+				audio.onended = function() {
+					$button.removeClass('active');
+				};
 			};
-		});
+		} catch (e) {
+			console.log('no valid note for: ' + string + ':' + fret);
+		}
 	},
-	
-/*
-^ bend up
-r release
-h hammer on
-p pull off
-x
-/ slide up
-\ slide down
-
-*/
 	
 	tabsReader: function() {
 		
 		var validChars = /[0-9]/;
-		var timeChars = /[0-9hp\-]/;
+		var timeChars = /[hp\-\*=L\\\/\{\}\(\)\^]/;
 		var timeSeries = {};
+		
+		var $tabHolder = $('<div></div>');
 	
 		var lines = $('#tab-text').val().split('\n');
 		var maxTime;
 		
+		var textData = '';
+
+		
 		for (var i = 0, time = 0; i < lines.length; time += maxTime) {
 		
 			maxTime = 0;
+			
+			if (!lines[i].match(/.*---.*/)) { textData += lines[i++] + '<br/>'; continue; }
 			
 			for (var string = 5; string >= 0 && i < lines.length; --string, ++i) {
 		
 				var line = lines[i];
 				var buffer = '';
 				
+				var lastChar = '';
 				for (var i2 = 0, lineTime = 0; i2 < line.length; ++i2) {
 					var char = line[i2];
+					var ctime = time + lineTime;
 					
 					if (char.match(validChars) || char.match(timeChars)) { ++lineTime; }
+					if (char == '|') { --lineTime;}
 					
 					if (!char.match(validChars)) {
 						if (buffer.length) {
-							var ctime = time + lineTime;
 							if (!timeSeries[ctime]) { timeSeries[ctime] = {}; }
 
 							timeSeries[ctime][string] = parseInt(buffer);
@@ -341,15 +365,26 @@ x
 						buffer += char;
 					}
 					
+					textData += '<span data-ref="' + ctime + '">' + char + '</span>';
+					
 					if (lineTime > maxTime) { maxTime = lineTime; }
 				}
+				
+				textData += '<br/>';
 			}
 		}
+		
+		$('#tab-show').html(textData);
 		
 		return timeSeries;
 	},
 	
 	stopTab: function() {
+		
+		$('#go').html('Play');
+		$('#tab-show').hide();
+		$('#tab-text').show();
+		
 		clearInterval(this.timer);
 		this.playing = false;
 	},
@@ -357,19 +392,27 @@ x
 	playTab: function() {
 		var self = this;
 		var timeSeries = this.tabsReader();
+		var lastTime = parseInt(_.last(_.keys(timeSeries)));
 
+		$('#go').html('Stop');
+		$('#tab-show').show();
+		$('#tab-text').hide();
+		
+		
 		var i = 0;
 		this.timer = setInterval(function() {
 		
-			if (i == timeSeries.length - 1) { clearInterval(self.timer); }
 			if (timeSeries[i]) {
-			
 				$.each(timeSeries[i], function(k, v) {
 					self.playNote(k, v);
 				});
 			}
 			
-			++i;
+			$('.active-time').removeClass('active-time');
+			$('[data-ref="' + i + '"]').addClass('active-time').get(0).scrollIntoView();
+			
+			if (i++ == lastTime) { self.stopTab(); }
+			
 		}, self.speed * 1000);
 		
 		self.playing = true;
