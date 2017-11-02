@@ -4,10 +4,10 @@ A simple web app allowing that helps visualize scales and notes on the guitar fr
 
 ![jsTuner](tuner.png "jsTuner")
 
-## Configurations
+### Configurations
 
-The app can be customized to change the number of displayed frets, change tunings, and highlight notes based on scale, root, for different keys and scales.
+The app can be customized to change the number of displayed frets, change tunings, and highlight notes based on a selected key or scale.
 
-## Playback
+### Playback
 
-Tabs can be copied and pasted into the text area below the fretboard and played at different speeds adjustable at the bottom right.
+Tabs can be copied and pasted into the text area below the fretboard and played at different speeds, adjustable at the bottom right.
