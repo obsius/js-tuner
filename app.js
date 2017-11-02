@@ -324,7 +324,7 @@ window.jsTuner = {
 	tabsReader: function() {
 		
 		var validChars = /[0-9]/;
-		var timeChars = /[hp\-\*=L\\\/\{\}\(\)\^]/;
+		var timeChars = /[hpsborx\-\*=L\\\/\{\}\(\)\^]/;
 		var timeSeries = {};
 		
 		var $tabHolder = $('<div></div>');

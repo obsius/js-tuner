@@ -15,11 +15,10 @@ html, body {
 	height: 600px;
 	margin-left: 5%;
 	margin-right: 5%;
-	border: 4px solid #BBCCEE;
-	border-radius: 20px;
 	top: 50%;
 	transform: translateY(-50%);
 	padding: 20px;
+	background-color: #333333
 }
 
 .button {
@@ -49,7 +48,8 @@ select {
 }
 
 text-area {
-	background-color: #EEEEEE;
+    background-color: #222222;
+    color: #FFFFFF;
 }
 
 .active {
