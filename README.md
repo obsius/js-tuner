@@ -17,4 +17,4 @@ Tabs can be copied and pasted into the text area below the fretboard and played 
 
 ## TODO
 
-- fix tunings (all notes are for standard, the string/fret combo doesn't work
+- fix tunings (all notes are for standard, the string/fret combo doesn't work)

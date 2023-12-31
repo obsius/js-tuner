@@ -8,36 +8,6 @@ html, body {
 	font-family: sans-serif;
 }
 
-#tuner-panel {
-	position: fixed;
-	min-width: 800px;
-	width: 90%;
-	height: 600px;
-	margin-left: 5%;
-	margin-right: 5%;
-	top: 50%;
-	transform: translateY(-50%);
-	padding: 20px;
-	background-color: #333333
-}
-
-.button {
-	position: absolute;
-	background-color: #000000;
-	border: 2px solid #000000;
-	border-radius: 12px;
-	width: 24px;
-	height: 24px;
-	top: 15px;
-	left: -13px;
-	cursor: pointer;
-	color: #CCCCCC;
-	vertical-align: middle;
-	line-height: 22px;
-	z-index: 999;
-	font-size: 12px;
-}
-
 select {
 	border-radius: 5px;
     padding: 0px 5px 0px 5px;
@@ -52,27 +22,27 @@ text-area {
     color: #FFFFFF;
 }
 
-.active {
-	background-color: #EEEEEE;
-	color: #000000;
-}
-
-.active-time {
-	background-color: #00FF00;
-	color: #000000;
-}
-
-.ref {
-	display: inline-block;
-	background-color: #CCCCCC;
-	border-radius: 4px;
-	width: 8px;
-	height: 8px;
-}
-
 button {
 	border-radius: 5px;
 	padding: 5px;
+}
+
+#tuner-panel {
+	position: fixed;
+	min-width: 800px;
+	width: 90%;
+	height: 600px;
+	margin-left: 5%;
+	margin-right: 5%;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 20px;
+	background-color: #333333
+}
+
+#tab-text {
+  background-color: #222222;
+  color: #FFFFFF;
 }
 
 #button-table {
@@ -92,4 +62,39 @@ button {
 #button-table td {
 	position: relative;
 	text-align: center;
+}
+
+.active {
+	background-color: #EEEEEE;
+	color: #000000;
+}
+
+.active-time {
+	background-color: #00FF00;
+	color: #000000;
+}
+
+.button {
+	position: absolute;
+	background-color: #000000;
+	border: 2px solid #000000;
+	border-radius: 12px;
+	width: 24px;
+	height: 24px;
+	top: 15px;
+	left: -13px;
+	cursor: pointer;
+	color: #CCCCCC;
+	vertical-align: middle;
+	line-height: 22px;
+	z-index: 999;
+	font-size: 12px;
+}
+
+.ref {
+	display: inline-block;
+	background-color: #CCCCCC;
+	border-radius: 4px;
+	width: 8px;
+	height: 8px;
 }
