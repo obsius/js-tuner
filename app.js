@@ -1,12 +1,6 @@
 Number.prototype.mod = function(n) {
 	return ((this % n) + n) % n;
-}
-
-/* TODO
-
-	fix tunings (all notes are for standard, the string/fret combo doesn't work
-
-*/
+};
 
 var data = {
 	"tunings": {
@@ -51,7 +45,8 @@ var data = {
 };
 
 window.jsTuner = {
-	resourceURL: 'http://obsius.github.io/jsTuner/resources/',
+	
+	resourceURL: 'https://data.transitwinds.com/obsius.net/tuner/',
 	fullScale: ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'],
 	intervals: ['R', 'm2', 'M2', 'm3', 'M3', 'P4', 'A4', 'P5', 'm6', 'M6', 'm7', 'M7'],
 	colors: ['00bce6', 'ff842c', '00d24a', 'efff00', 'ae55ff', 'ff3f3f', '2961ff', '52fff7', 'ff5ac5', 'a6dd99', '1bff00', '7a15ff'],
